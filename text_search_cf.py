@@ -15,10 +15,12 @@ if __name__=="__main__":
     """This script searches for a designated word word within multiple files using multiprocessing"""
     parser = argparse.ArgumentParser(description='Input the needed word and file paths')
     parser.add_argument('--word', type=str, default='enemies', help='Input the word to search for')
-    parser.add_argument('--files', type=str, default='texts/is_1.txt, texts/isnt_1.txt', help='Input file paths separated by \', \'')
+    parser.add_argument('--files', type=str, default='texts/is_1.txt, texts/isnt_1.txt, texts/is_2.txt, texts/isnt_2.txt, texts/is_3.txt, texts/isnt_3.txt', help='Input file paths separated by \', \'')
     args = parser.parse_args()
     file_list = [str(item) for item in args.files.split(', ')]
     with ProcessPoolExecutor(6) as executor:
         answers = executor.map(find_word, repeat(args.word), file_list)
+        i = 0
         for answer in answers:
-            print(answer)
+            print(file_list[i] + ': ' + str(answer))
+            i+=1
